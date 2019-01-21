@@ -47,3 +47,20 @@ functions:
     handler: src/handler/handler.alexa
     events:
       - alexaSkill: ${self:custom.alexa.skills.0.id}
+
+resources:
+  Resources:
+    UserTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: heag-alexa-dev-user
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S #String
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
