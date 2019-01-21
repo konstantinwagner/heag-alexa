@@ -35,11 +35,12 @@ custom:
           de-DE:
             interactionModel:
               languageModel:
-                invocationName: heag
+                invocationName: darmstadt
                 intents:
-                  - name: HelloIntent
+                  - name: FavoriteStationIntent
                     samples:
-                      - 'hallo'
+                      - 'nach meiner Haltestelle'
+                      - 'nach den nächsten Abfahrten'
 
 functions:
   alexa:

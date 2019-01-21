@@ -1,10 +1,12 @@
-export interface HeagDepartureModel {
-    name: string;
-    shortName: string;
+export class HeagDepartureModel {
+    constructor(public name: string,
+                public shortName: string,
+                public scheduledDeparture: Date,
+                public expectedDeparture: Date,
+                public destinationId: string,
+                public destinationName: string) {
 
-    scheduledDeparture: Date;
-    expectedDeparture: Date;
+    }
 
-    destinationId: string;
-    destinationName: string;
 }
+
