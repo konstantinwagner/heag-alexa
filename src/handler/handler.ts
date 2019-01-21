@@ -1,9 +1,13 @@
 import * as Ask from 'ask-sdk';
-import {NextDeparturesHandler} from './NextDepartures.handler';
 import {FavoriteStationHandler} from './FavoriteStation.handler';
+import {HandlerInput} from 'ask-sdk-core';
 
 export const alexa = Ask.SkillBuilders.custom()
     .addRequestHandlers(
-        NextDeparturesHandler,
         FavoriteStationHandler)
     .lambda();
+
+export function matchesIntent(input: HandlerInput, intent: string) {
+    return input.requestEnvelope.request.type === 'IntentRequest' &&
+        input.requestEnvelope.request.intent.name === intent;
+}

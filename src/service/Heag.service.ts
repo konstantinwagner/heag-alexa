@@ -12,7 +12,7 @@ const httpPrefix: string = (() => {
     return 'https://routing.geomobile.de/test';
 })();
 
-export const GetHeagStationsByNameService: RequestService<string, void, any[], HeagStationModel[]> = {
+export const GetHeagStationListByNameService: RequestService<string, void, any[], HeagStationModel[]> = {
     url: searchNeedle => httpPrefix + '/stations?name=' + searchNeedle + '&onlyStations=true&bundleIdentifier=de.ivanto.heagmobilo',
     type: RequestType.GET,
 
@@ -39,7 +39,7 @@ export const GetHeagStationsByNameService: RequestService<string, void, any[], H
     },
 };
 
-export const GetHeagDeparturesService: RequestService<string, void, any[], HeagDepartureModel[]> = {
+export const GetHeagDepartureListService: RequestService<string, void, any[], HeagDepartureModel[]> = {
     url: stationId => httpPrefix + '/departures?stationID=' + stationId + '&bundleIdentifier=de.ivanto.heagmobilo&sortBy=departureDate',
     type: RequestType.GET,
 

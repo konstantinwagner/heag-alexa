@@ -2,22 +2,22 @@ import {CustomSkillRequestHandler} from 'ask-sdk-core/dist/dispatcher/request/ha
 import {Response} from 'ask-sdk-model';
 import {HandlerInput} from 'ask-sdk-core';
 import {schedule} from '../service/service-executor';
-import {GetHeagDeparturesService} from '../service/Heag.service';
+import {GetHeagDepartureListService} from '../service/Heag.service';
+import {matchesIntent} from './handler';
 
 export const FavoriteStationHandler: CustomSkillRequestHandler = {
     canHandle(input: HandlerInput): Promise<boolean> | boolean {
-        return input.requestEnvelope.request.type === 'IntentRequest' &&
-            input.requestEnvelope.request.intent.name === 'FavoriteStationIntent';
+        return matchesIntent(input, 'FavoriteStationIntent');
     },
 
     async handle(input: HandlerInput): Promise<Response> {
-        const departures = await schedule(GetHeagDeparturesService, '3024515');
+        const departures = await schedule(GetHeagDepartureListService, '3024515');
 
         return input.responseBuilder
             .speak('hey ho bitte nicht der alte ' + departures[0].destinationName)
             .addRenderTemplateDirective({
                 type: 'ListTemplate1',
-                title: 'hello',
+                title: 'Abfahrten ab ...',
                 listItems: departures.map((departure, i) => {
                     return {
                         token: 'departure_' + i,
