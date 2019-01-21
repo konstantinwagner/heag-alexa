@@ -7,7 +7,7 @@ export const alexa = Ask.SkillBuilders.custom()
         FavoriteStationHandler)
     .lambda();
 
-export function matchesIntent(input: HandlerInput, intent: string) {
+export function matchesIntent(input: HandlerInput, intent: string): boolean {
     return input.requestEnvelope.request.type === 'IntentRequest' &&
         input.requestEnvelope.request.intent.name === intent;
 }

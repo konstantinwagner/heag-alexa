@@ -5,20 +5,24 @@ import {schedule} from '../service/service-executor';
 import {GetHeagDepartureListService} from '../service/Heag.service';
 import {matchesIntent} from './handler';
 
+const timeOffset = 5;
+
 export const FavoriteStationHandler: CustomSkillRequestHandler = {
     canHandle(input: HandlerInput): Promise<boolean> | boolean {
-        return matchesIntent(input, 'FavoriteStationIntent');
+        return true;
     },
 
     async handle(input: HandlerInput): Promise<Response> {
         const departures = await schedule(GetHeagDepartureListService, '3024515');
 
+        const offsetDepartures = departures.filter(departure => departure.getDepartureIn() >= timeOffset);
+
         return input.responseBuilder
-            .speak('hey ho bitte nicht der alte ' + departures[0].destinationName)
+            .speak('Abfahrten ab Pallaswiesenstraße...')
             .addRenderTemplateDirective({
                 type: 'ListTemplate1',
                 title: 'Abfahrten ab ...',
-                listItems: departures.map((departure, i) => {
+                listItems: offsetDepartures.map((departure, i) => {
                     return {
                         token: 'departure_' + i,
                         textContent: {
@@ -28,7 +32,8 @@ export const FavoriteStationHandler: CustomSkillRequestHandler = {
                             },
                             secondaryText: {
                                 type: 'PlainText' as 'PlainText',
-                                text: departure.name,
+                                text: departure.name + ' - Abfahrt in ' + departure.getDepartureIn() + ' Minuten'
+                                    + (departure.isDelayed() ? ' (+ ' + departure.getDelay() + ')' : ''),
                             },
                         },
                     };

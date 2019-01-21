@@ -52,16 +52,13 @@ export const GetHeagDepartureListService: RequestService<string, void, any[], He
 
                 // Parse all returned departures
                 accept(json.map(departureJson => {
-                    return {
-                        name: departureJson.lineName,
-                        shortName: departureJson.shortName,
-
-                        scheduledDeparture: new Date(departureJson.departureDate),
-                        expectedDeparture: new Date(departureJson.expectedDepartureDate),
-
-                        destinationId: departureJson.destinationID,
-                        destinationName: departureJson.destination,
-                    };
+                    return new HeagDepartureModel(
+                        departureJson.lineName,
+                        departureJson.shortName,
+                        new Date(departureJson.departureDate),
+                        new Date(departureJson.expectedDepartureDate),
+                        departureJson.destinationID,
+                        departureJson.destination);
                 }));
             }).catch(reason => reject(reason));
         });
