@@ -12,38 +12,38 @@ export interface RequestService<D, T, R, O> {
     type: RequestType;
     url: ((data: D) => string) | string;
 
-    queryparams?(data: D): URLSearchParams;
+    queryParams?(data: D): URLSearchParams;
 
     preprocess(data: D): T;
 
     postprocess(response: AxiosPromise<R>): Promise<O>;
 }
 
-function sendRequest<T, R>(type: RequestType, header: any, queryparams: any,
+function sendRequest<T, R>(type: RequestType, header: any, queryParams: any,
                            responseType: string, data: T, url: string): AxiosPromise<R> {
     switch (type) {
         case RequestType.GET:
             return axios.get<R>(url, {
                 headers: header,
-                params: queryparams,
+                params: queryParams,
                 responseType,
             });
         case RequestType.POST:
             return axios.post<R>(url, data, {
                 headers: header,
-                params: queryparams,
+                params: queryParams,
                 responseType,
             });
         case RequestType.PUT:
             return axios.put<R>(url, data, {
                 headers: header,
-                params: queryparams,
+                params: queryParams,
                 responseType,
             });
         case RequestType.DELETE:
             return axios.delete(url, {
                 headers: header,
-                params: queryparams,
+                params: queryParams,
                 responseType,
             }) as AxiosPromise<R>;
         default:
@@ -57,7 +57,7 @@ export function schedule<D, T, R, O>(request: RequestService<D, T, R, O>, data: 
     return new Promise<O>((resolve, reject) => {
         request.postprocess(sendRequest(request.type,
             request.header ? request.header : {},
-            request.queryparams ? request.queryparams(data) : undefined,
+            request.queryParams ? request.queryParams(data) : undefined,
             request.responseType ? request.responseType : 'application/json',
             request.preprocess(data),
             typeof request.url === 'string' ? request.url : request.url(data)))
