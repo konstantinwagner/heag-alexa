@@ -3,7 +3,6 @@ import {Response} from 'ask-sdk-model';
 import {HandlerInput} from 'ask-sdk-core';
 import {schedule} from '../service/service-executor';
 import {GetHeagDepartureListService} from '../service/Heag.service';
-import {matchesIntent} from './handler';
 
 const timeOffset = 5;
 
@@ -32,8 +31,10 @@ export const FavoriteStationHandler: CustomSkillRequestHandler = {
                             },
                             secondaryText: {
                                 type: 'PlainText' as 'PlainText',
-                                text: departure.name + ' - Abfahrt in ' + departure.getDepartureIn() + ' Minuten'
-                                    + (departure.isDelayed() ? ' (+ ' + departure.getDelay() + ')' : ''),
+                                text: departure.name + ' um ' + departure.getFormattedDeparture() +
+                                    ' (' + departure.getScheduledDepartureIn()
+                                    + (departure.isDelayed() ? ' + ' + departure.getDelay() + '' : '')
+                                    + ' Minuten)',
                             },
                         },
                     };

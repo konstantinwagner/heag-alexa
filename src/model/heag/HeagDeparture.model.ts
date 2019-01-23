@@ -8,8 +8,16 @@ export class HeagDepartureModel {
 
     }
 
+    public getFormattedDeparture(): string {
+        return this.expectedDeparture.getHours() + ':' + ('0' + this.expectedDeparture.getMinutes()).slice(-2) + ' Uhr';
+    }
+
     public getDepartureIn(): number {
         return Math.floor((this.expectedDeparture.getTime() - Date.now()) / 1000 / 60);
+    }
+
+    public getScheduledDepartureIn(): number {
+        return Math.floor((this.scheduledDeparture.getTime() - Date.now()) / 1000 / 60);
     }
 
     public getDelay(): number {
