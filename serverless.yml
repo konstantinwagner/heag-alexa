@@ -9,7 +9,25 @@ provider:
   name: aws
   runtime: nodejs8.10
 
+  stage: ${opt:stage, 'dev'}
+
+  # Set database name as environment var
+  environment:
+    USER_TABLE: ${self:custom.userTableName}
+
+  # Grant database access
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource:
+        - "Fn::GetAtt": [ UserTable, Arn ]
+
 custom:
+  # Stage-dependent vars
+  userTableName: heag-alexa-${self:provider.stage}-user
+
   alexa:
     # Step 1: Run `sls alexa auth` to authenticate
     # Step 2: Run `sls alexa create --name "Serverless Alexa Typescript" --locale en-GB --type custom` to create a new skill
@@ -53,10 +71,10 @@ resources:
     UserTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: heag-alexa-dev-user
+        TableName: ${self:custom.userTableName}
         AttributeDefinitions:
           - AttributeName: userId
-            AttributeType: S #String
+            AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
