@@ -12,6 +12,7 @@ provider:
   stage: ${opt:stage, 'dev'}
 
   # Set database name as environment var
+  # TODO move to lambda
   environment:
     USER_TABLE: ${self:custom.userTableName}
 
