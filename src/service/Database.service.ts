@@ -21,24 +21,24 @@ export class DatabaseService {
         return {
             userId: userDocument['userId'].S || '', // TODO
             favoriteStationId: userDocument['favoriteStationId'].S || '', // TODO
+            favoriteStationName: userDocument['favoriteStationName'].S || '', // TODO
         };
     }
 
     async putUser(user: UserModel): Promise<void> {
-        try {
-            await this.db.putItem({
-                TableName: userTableName,
-                Item: {
-                    'userId': {
-                        'S': user.userId,
-                    },
-                    'favoriteStationId': {
-                        'S': user.favoriteStationId,
-                    },
-                }
-            }).promise();
-        } catch (e) {
-            throw Error('Unable to save user');
-        }
+        await this.db.putItem({
+            TableName: userTableName,
+            Item: {
+                'userId': {
+                    'S': user.userId,
+                },
+                'favoriteStationId': {
+                    'S': user.favoriteStationId,
+                },
+                'favoriteStationName': {
+                    'S': user.favoriteStationName,
+                },
+            }
+        }).promise();
     }
 }

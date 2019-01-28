@@ -5,12 +5,12 @@ import {SetFavoriteStationHandler} from './SetFavoriteStation.handler';
 import {DatabaseService} from '../service/Database.service';
 import {LaunchHandler} from './Launch.handler';
 
-const dbService = new DatabaseService();
+export const dbService = new DatabaseService();
 
 export const alexa = Ask.SkillBuilders.custom()
     .addRequestHandlers(
-        LaunchHandler,
-        SetFavoriteStationHandler,
+        //LaunchHandler,
+        //SetFavoriteStationHandler,
         FavoriteStationHandler)
     .lambda();
 
