@@ -8,6 +8,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs8.10
+  memorySize: 192 # MiB
 
   stage: ${opt:stage, 'dev'}
 
