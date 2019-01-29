@@ -3,7 +3,7 @@ import {Response} from 'ask-sdk-model';
 import {HandlerInput} from 'ask-sdk-core';
 import {schedule} from '../service/service-executor';
 import {GetHeagStationListByNameService} from '../service/Heag.service';
-import {matchesIntent} from './handler';
+import {dbService, matchesIntent} from './handler';
 
 export const SetFavoriteStationHandler: CustomSkillRequestHandler = {
     canHandle(input: HandlerInput): Promise<boolean> | boolean {
@@ -11,15 +11,16 @@ export const SetFavoriteStationHandler: CustomSkillRequestHandler = {
     },
 
     async handle(input: HandlerInput): Promise<Response> {
-        if (input.requestEnvelope.request.type !== 'IntentRequest' || !input.requestEnvelope.request.intent.slots)
-            throw new Error(''); // TODO
+        if (input.requestEnvelope.request.type !== 'IntentRequest' || !input.requestEnvelope.request.intent.slots || !input.requestEnvelope.session)
+            throw new Error('Incompatible request type');
 
         const stationNeedle = input.requestEnvelope.request.intent.slots['stationNeedle'].value;
         const stations = await schedule(GetHeagStationListByNameService, stationNeedle);
 
         /*await dbService.putUser({
-            userId: 'test',
-            favoriteStationId: '123abc',
+            userId: input.requestEnvelope.session.user.userId,
+            favoriteStationId: '123abc', // TODO
+            favoriteStationName: 'Teststation', // TODO
         });*/
 
         return input.responseBuilder
